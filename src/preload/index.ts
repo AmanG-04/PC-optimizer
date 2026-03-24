@@ -3,6 +3,11 @@ import { contextBridge, ipcRenderer } from 'electron';
 // System stats types
 interface SystemStats {
   cpu: number;
+  cpuSources?: {
+    windowsUtility: number | null;
+    sampledDelta: number;
+    systemInformationLoad: number;
+  };
   ram: {
     used: number;
     total: number;
@@ -14,6 +19,36 @@ interface SystemStats {
     percentage: number;
   };
   timestamp: number;
+}
+
+interface CleanJunkResult {
+  success: boolean;
+  deletedCount: number;
+  skippedCount: number;
+  failedCount: number;
+  message: string;
+}
+
+interface PowerShellExecResult {
+  success: boolean;
+  stdout: string;
+  stderr: string;
+  exitCode: number | null;
+  message: string;
+}
+
+interface StartupAppEntry {
+  name: string;
+  command: string;
+  type: string;
+  status: 'enabled' | 'disabled' | 'unknown';
+  inRunKey: boolean;
+  location: 'HKCU' | 'HKLM';
+}
+
+interface StartupActionResult {
+  success: boolean;
+  message: string;
 }
 
 // Expose IPC functionality to renderer process
@@ -37,6 +72,11 @@ contextBridge.exposeInMainWorld('api', {
       callback(stats);
     });
   },
+  cleanJunk: () => ipcRenderer.invoke('clean-junk'),
+  executePowerShell: (command: string) => ipcRenderer.invoke('execute-powershell', command),
+  getStartupApps: () => ipcRenderer.invoke('get-startup-apps'),
+  removeStartupApp: (name: string, location: 'HKCU' | 'HKLM') =>
+    ipcRenderer.invoke('remove-startup-app', name, location),
 });
 
 // Type definitions for the exposed API
@@ -50,6 +90,10 @@ declare global {
       startMonitoring: () => void;
       stopMonitoring: () => void;
       onSystemStats: (callback: (stats: SystemStats) => void) => void;
+      cleanJunk: () => Promise<CleanJunkResult>;
+      executePowerShell: (command: string) => Promise<PowerShellExecResult>;
+      getStartupApps: () => Promise<StartupAppEntry[]>;
+      removeStartupApp: (name: string, location: 'HKCU' | 'HKLM') => Promise<StartupActionResult>;
     };
   }
 }
