@@ -1,0 +1,37 @@
+{
+  "name": "pc-optimizer",
+  "version": "1.0.0",
+  "description": "A production-ready Electron + React + TypeScript desktop application",
+  "author": "Your Name",
+  "main": "dist/main/index.js",
+  "homepage": "./",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:preload\" \"npm run dev:main\" \"npm run dev:renderer\"",
+    "dev:preload": "vite build --watch --mode development --config vite.preload.config.ts",
+    "dev:main": "vite build --watch --mode development --config vite.main.config.ts",
+    "dev:renderer": "vite --mode development --config vite.renderer.config.ts",
+    "build": "npm run build:preload && npm run build:main && npm run build:renderer",
+    "build:preload": "vite build --mode production --config vite.preload.config.ts",
+    "build:main": "vite build --mode production --config vite.main.config.ts",
+    "build:renderer": "vite build --mode production --config vite.renderer.config.ts",
+    "preview": "vite preview --config vite.renderer.config.ts",
+    "start": "electron dist/main/index.js",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "electron-is-dev": "^2.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "systeminformation": "^5.31.5"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "electron": "^41.0.3",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.2"
+  }
+}
