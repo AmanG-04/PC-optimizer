@@ -299,6 +299,13 @@ button:disabled {
   margin: 0;
 }
 
+.stat-debug {
+  font-size: 0.78rem;
+  color: #7a7a7a;
+  margin: 0;
+  word-break: break-word;
+}
+
 .timestamp {
   grid-column: 1 / -1;
   padding: 1rem;
@@ -325,4 +332,42 @@ button:disabled {
 .no-stats p {
   margin: 0;
   font-size: 1rem;
+}
+
+.status-message {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.status-message.success {
+  background: #e8f7ec;
+  color: #1f7a39;
+  border: 1px solid #bfe8cb;
+}
+
+.status-message.error {
+  background: #fdecec;
+  color: #b3261e;
+  border: 1px solid #f5b7b1;
+}
+
+.command-output-wrap {
+  margin-top: 0.75rem;
+}
+
+.command-output {
+  margin-top: 0.5rem;
+  background: #0e1016;
+  color: #e6ecff;
+  border-radius: 8px;
+  padding: 0.85rem;
+  border: 1px solid #2a2f3f;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  max-height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
